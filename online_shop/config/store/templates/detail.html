@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet"/>
+    <link href="{% static '/css/all.min.css' %}" rel="stylesheet"/>
+    <link href="{% static '/css/templatemo-style.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+</head>
+
+<body>
+
+{% block content %}
+    <div class="section product-detail">
+        <div class="columns is-flex is-align-items-center">
+            <div class="column">
+                <div class="box">
+                    <figure class="image product-detail-image">
+                        <img src="{{ product.image.url }}" alt="Placeholder image">
+                    </figure>
+                </div>
+            </div>
+            <div class="column">
+                <div class="content">
+                    <p class="title is-size-2">
+                        {{ product.title }}
+                    </p>
+                    <p>{{ product.description }}</p>
+                    <p class="title is-size-3 has-text-info">{{ product.price }} $</p>
+                    <p class="title is-size-5 has-text-grey-light">0 отзывов</p>
+                    <p class="title is-size-4">
+                        Поделится:
+                        <span class="is-size-4 mx-3">
+                            <a href="#">
+                                <ion-icon name="logo-whatsapp" class="order"></ion-icon>
+                            </a>
+                            <a href="#">
+                                <ion-icon name="logo-youtube" class="order"></ion-icon>
+                            </a>
+                            <a href="#">
+                                <ion-icon name="logo-facebook" class="order"></ion-icon>
+                            </a>
+                        </span>
+                    </p>
+                        <a href="{% url 'store:rate_product' product.pk %}" class="button is-warning">View</a>
+                        <a href="{% url 'store:shop' %}" class="button is-info">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+<footer class="tm-footer text-center">
+    <p>Copyright &copy; 2020 Simple House
+
+        | Design: <a rel="nofollow" href="https://templatemo.com">TemplateMo</a></p>
+</footer>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="{% static '/js/jquery.min.js' %}"></script>
+<script src="{% static '/js/parallax.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        // Handle click on paging links
+        $('.tm-paging-link').click(function (e) {
+            e.preventDefault();
+
+            var page = $(this).text().toLowerCase();
+            $('.tm-gallery-page').addClass('hidden');
+            $('#tm-gallery-page-' + page).removeClass('hidden');
+            $('.tm-paging-link').removeClass('active');
+            $(this).addClass("active");
+        });
+    });
+</script>
+</div>
+</body>
+
+</html>

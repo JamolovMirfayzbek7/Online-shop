@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet"/>
+    <link href="{% static '/css/all.min.css' %}" rel="stylesheet"/>
+    <link href="{% static '/css/templatemo-style.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+</head>
+
+<body>
+
+<nav style="background-color: #CCCCCC" class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="{% url 'store:home' %}">
+            <img src="{% static 'img/logo.png' %}" alt=""/>
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+</nav>
+{% block content %}
+    <div style="background-color: #CCCCCC" class="container">
+        <div class="columns">
+            <div class="column">
+                <div class="box">
+                    <form method="post" action="{% url 'store:create_order' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="title">
+                            Information:
+                        </div>
+                        {% for field in form %}
+                            <div class="field">
+                                <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="button is-fullwidth is-success">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="column is-6">
+                <div class="box">
+                    <a class="button is-info" href="{% url 'store:cart' %}">Back</a>
+                    <hr>
+                    <div class="title">Order</div>
+                    <table class="table is-fullwidth">
+                        <thead>
+                        <tr class="has-text-weight-bold">
+                            <td></td>
+                            <td>Product</td>
+                            <td>Price</td>
+                            <td>Quantity</td>
+                            <td>Total</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in cart_items %}
+                            <tr>
+                                <td>
+                                    <img src="{{ item.product.image.url }}" alt="" width="50" height="50">
+                                </td>
+                                <td>{{ item }}</td>
+                                <td>{{ item.product.price }} $</td>
+                                <td>x {{ item.quantity }}</td>
+                                <td>{{ item.total_price }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <p class="title is-size-4">Total: {{ total_price }} $ </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+<footer class="tm-footer text-center">
+    <p>Copyright &copy; 2022 Simple House
+
+        | Design: <a rel="nofollow" href="https://templatemo.com">TemplateMo</a></p>
+</footer>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="{% static '/js/jquery.min.js' %}"></script>
+<script src="{% static '/js/parallax.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        // Handle click on paging links
+        $('.tm-paging-link').click(function (e) {
+            e.preventDefault();
+
+            var page = $(this).text().toLowerCase();
+            $('.tm-gallery-page').addClass('hidden');
+            $('#tm-gallery-page-' + page).removeClass('hidden');
+            $('.tm-paging-link').removeClass('active');
+            $(this).addClass("active");
+        });
+    });
+</script>
+</div>
+</body>
+
+</html>

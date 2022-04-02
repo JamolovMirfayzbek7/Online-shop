@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet"/>
+    <link href="{% static '/css/all.min.css' %}" rel="stylesheet"/>
+    <link href="{% static '/css/templatemo-style.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+</head>
+
+<body>
+
+{% block content %}
+    <div class="section">
+        <div class="columns is-flex is-align-items-center">
+            <div class="column">
+                <div class="box">
+                    <figure class="image product-detail-image">
+                        <img src="{{ product.image.url }}" alt="Placeholder image">
+                    </figure>
+                </div>
+            </div>
+            <div class="column">
+                <div class="box">
+                    <div class="content">
+                        <p class="title is-size-2">
+                            {{ product.title }}
+                        </p>
+                        <p class="title is-size-5 has-text-grey-light">{{ product.description }}</p>
+                        <form action="{% url 'store:rate_product' product.pk %}" method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                {% if field.name == 'rate' %}
+                                    <div class="select is-fullwidth my-2">
+                                        <label for="{{ field.id_for_label }}"
+                                               class="label is-size-4">{{ field.label }}</label>
+                                        {{ field }}
+                                    </div>
+                                {% else %}
+                                    <div class="field">
+                                        <label for="{{ field.id_for_label }}" class="label is-size-4">
+                                            {{ field.label }}
+                                        </label>
+                                        {{ field }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            <div class="mt-6">
+                                <br>
+                                <button class='button is-success' type="submit">Submit</button>
+                                <a class='button is-danger' href="{% url 'store:detail' product.pk %}">
+                                    Back</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="section">
+            {% if reviews %}
+                <div class="title is-size-3 has-text-centered">Reviews of other clients</div>
+                <div class="columns is is-multiline is-centered">
+                    {% for review in reviews %}
+                        <div class="column is-6">
+                            <div class="card">
+                                <div class="card-content">
+                                    <p class="subtitle has-text-right has-text-grey-light is-6">{{ review.date }}</p>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <figure class="image is-48x48">
+                                                <img src="https://bulma.io/images/placeholders/96x96.png"
+                                                     alt="Placeholder image" class="is-rounded">
+                                            </figure>
+                                        </div>
+                                        <div class="media-content">
+                                            <p class="title is-4">{{ review.user.first_name }}</p>
+                                            <p class="subtitle is-6">@{{ review.user.username }}</p>
+
+                                        </div>
+                                    </div>
+                                    <div class="content is-size-5 has-text-weight-bold has-text-centered">
+                                        {{ review.text }}
+                                    </div>
+                                    <p class="subtitle is-size-4">
+                                        <ion-icon name="star-outline"></ion-icon>
+                                        {{ review.rate }} out of 5
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="title is-size-3 has-text-centered">No reviews yet. Be first to leave one</div>
+            {% endif %}
+        </div>
+        <hr>
+    </div>
+{% endblock %}
+<footer class="tm-footer text-center">
+    <p>Copyright &copy; 2020 Simple House
+
+        | Design: <a rel="nofollow" href="https://templatemo.com">TemplateMo</a></p>
+</footer>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="{% static '/js/jquery.min.js' %}"></script>
+<script src="{% static '/js/parallax.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        // Handle click on paging links
+        $('.tm-paging-link').click(function (e) {
+            e.preventDefault();
+
+            var page = $(this).text().toLowerCase();
+            $('.tm-gallery-page').addClass('hidden');
+            $('#tm-gallery-page-' + page).removeClass('hidden');
+            $('.tm-paging-link').removeClass('active');
+            $(this).addClass("active");
+        });
+    });
+</script>
+</div>
+</body>
+
+</html>

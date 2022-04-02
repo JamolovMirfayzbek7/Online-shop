@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet"/>
+    <link href="{% static '/css/all.min.css' %}" rel="stylesheet"/>
+    <link href="{% static '/css/templatemo-style.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+</head>
+
+<body>
+    <br><br>
+    <div class="container">
+        <div class="card p-5">
+                <a class='button is-info' href="{% url 'store:shop' %}">Back</a>
+            <div class="content">
+                {% if orders %}
+                    <div class="title has-text-centered">My orders</div>
+                    <table class="table has-text-centered">
+                        <thead>
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Products</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Payed</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <td>{{ order }}</td>
+                                <td>
+                                    {% for order_product in order.order_products.all %}
+                                        <a href="{% url 'store:detail' order_product.product.pk %}">
+                                            {{ order_product }}
+                                        </a>,
+                                    {% endfor %}
+                                </td>
+                                <td>{{ order.total_price }} $</td>
+                                <td>In consideration</td>
+                                <td>Not payed</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="title has-text-centered">Nothing ordered yet</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+<footer class="tm-footer text-center">
+    <p>Copyright &copy; 2020 Simple House
+
+        | Design: <a rel="nofollow" href="https://templatemo.com">TemplateMo</a></p>
+</footer>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="{% static '/js/jquery.min.js' %}"></script>
+<script src="{% static '/js/parallax.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        // Handle click on paging links
+        $('.tm-paging-link').click(function (e) {
+            e.preventDefault();
+
+            var page = $(this).text().toLowerCase();
+            $('.tm-gallery-page').addClass('hidden');
+            $('#tm-gallery-page-' + page).removeClass('hidden');
+            $('.tm-paging-link').removeClass('active');
+            $(this).addClass("active");
+        });
+    });
+</script>
+</div>
+</body>
+
+</html>
+

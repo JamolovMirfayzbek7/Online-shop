@@ -1,0 +1,33 @@
+ion-icon {
+    --ionicon-stroke-width: 50px;
+    color: #0a0a0a;
+}
+
+.order {
+    font-size: 30px;
+    cursor: pointer;
+    color: black;
+}
+
+.order:hover {
+    color: red;
+}
+
+.quantity {
+    display: inline-block;
+    font-weight: 700;
+    padding-right: 10px;
+
+}
+
+.arrows {
+    width: 12px;
+    cursor: pointer;
+    display: block;
+    margin-top: 5px;
+    transition: .1s;
+}
+
+.arrows:hover {
+    opacity: .6;
+}
